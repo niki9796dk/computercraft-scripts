@@ -22,7 +22,7 @@ function new (direction)
     }
 
     --- Pass any unknown function calls to the underlying terminal
-    return setmetatable(public, self.terminal)
+    return setmetatable(public, {__index = self.terminal})
 end
 
 return {new = new}
