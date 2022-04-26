@@ -5,8 +5,11 @@
 ---
 
 function new (direction)
-    --- @type EnhancedTerminal
-    local self = {}
+    --- @class table : EnhancedTerminal
+    local self = {
+        --- @type term
+        parent = peripheral.wrap(direction),
+    }
 
     --- Define public API
     --- @class EnhancedTerminal : term
@@ -17,7 +20,7 @@ function new (direction)
 
         clear = function ()
             self.setBackgroundColor(colors.black)
-            self.clear()
+            self.parent.clear()
             self.setCursorPos(1,1)
         end,
 
@@ -45,11 +48,11 @@ function new (direction)
         end,
     }
 
-    --- Make it possible to access public api from self
+    --- Make it possible to access public/private api from self
     setmetatable(self, {__index = public})
 
     --- Pass any unknown function calls to the underlying terminal
-    return setmetatable(public, {__index = peripheral.wrap(direction)})
+    return setmetatable(public, {__index = self.parent})
 end
 
 return {new = new}
