@@ -9,15 +9,8 @@ function new (direction)
         terminal = peripheral.wrap(direction),
     }
 
-    --- Pass any unknown function calls to the underlying terminal
-    setmetatable(self, self.terminal)
-
     --- Define public API
-    return {
-        setMonitor = function (terminal)
-            self.terminal = terminal
-        end,
-
+    local public = {
         helloWorld = function ()
             self.terminal.write("Hello World!")
         end,
@@ -27,6 +20,9 @@ function new (direction)
             self.terminal.setCursorPos(1,1)
         end
     }
+
+    --- Pass any unknown function calls to the underlying terminal
+    return setmetatable(public, self.terminal)
 end
 
 return {new = new}
