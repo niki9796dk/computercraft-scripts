@@ -4,19 +4,22 @@
 --- DateTime: 26-04-2022 22:34
 ---
 
-EnhancedMonitor = {}
+function new ()
+    local self = {
+        monitor = nil
+    }
 
-function EnhancedMonitor:new ()
-    o = {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
+    return {
+        setMonitor = function (monitor)
+            self.monitor = monitor
+        end,
+
+        helloWorld = function ()
+            self.monitor.write("Hello World!")
+        end,
+    }
 end
 
 function EnhancedMonitor:setMonitor(monitor)
     self.monitor = monitor
-end
-
-function EnhancedMonitor:helloWorld()
-    self.monitor.write("Hello World")
 end
