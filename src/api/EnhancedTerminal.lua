@@ -48,15 +48,15 @@ function new (direction)
         end,
 
         printList = function (table)
-            for i, v in pairs(table) do
-                self.writeNewLine(v)
-            end
-        end,
+            local currentX, currentY = self.getCursorPos()
 
-        writeNewLine = function (text)
-            local x, y = self.getCursorPos();
-            self.write(text)
-            self.setCursorPos(x, y + 1)
+            for _, row in pairs(table) do
+                for key, value in pairs(row) do
+                    self.write(value .. " ")
+                end
+
+                self.setCursorPos(currentX, currentY + 1)
+            end
         end,
     }
 
