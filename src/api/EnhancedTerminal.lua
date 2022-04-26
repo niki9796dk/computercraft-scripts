@@ -5,41 +5,51 @@
 ---
 
 function new (direction)
-    local self = {
-        --- @type term
-        terminal = peripheral.wrap(direction),
-    }
+    --- @type EnhancedTerminal
+    local self = {}
 
     --- Define public API
+    --- @class EnhancedTerminal : term
     local public = {
         helloWorld = function ()
-            self.terminal.write("Hello World!")
+            self.write("Hello World!")
         end,
 
         clear = function ()
-            self.terminal.clear()
-            self.terminal.setCursorPos(1,1)
+            self.setBackgroundColor(colors.black)
+            self.clear()
+            self.setCursorPos(1,1)
         end,
 
         printProgressBar = function (width, progress)
-            self.terminal.setCursorPos(1, 1)
-            self.terminal.setBackgroundColor(colors.black);
+            self.printBar(width, colors.lightGray, 1, 1)
+            self.printBar(math.floor((progress / 100) * width), colors.red, 1, 1)
+        end,
+
+        printBar = function (width, color, x, y)
+            --- Save current state
+            local currentX, currentY = self.getCursorPos();
+            local currentColor = self.getBackgroundColor(),
+
+            --- Print bar at pos
+            self.setCursorPos(x, y)
+            self.setBackgroundColor(color)
 
             for i = 1, width do
-                self.terminal.write(" ")
+                self.write(" ")
             end
 
-            self.terminal.setBackgroundColor(colors.red);
-            local printWidth = math.floor((progress / 100) * width)
-
-            for i = 1, printWidth do
-                self.terminal.write(" ")
-            end
+            --- Revert state
+            self.setBackgroundColor(currentColor)
+            self.setCursorPos(currentX, currentY)
         end,
     }
 
+    --- Make it possible to access public api from self
+    setmetatable(self, {__index = public})
+
     --- Pass any unknown function calls to the underlying terminal
-    return setmetatable(public, {__index = self.terminal})
+    return setmetatable(public, {__index = peripheral.wrap(direction)})
 end
 
 return {new = new}
