@@ -17,9 +17,10 @@ function new ()
         helloWorld = function ()
             self.monitor.write("Hello World!")
         end,
-    }
-end
 
-function EnhancedMonitor:setMonitor(monitor)
-    self.monitor = monitor
+        clear = function ()
+            self.monitor.clear()
+            self.monitor.setCursorPos()
+        end
+    }
 end
