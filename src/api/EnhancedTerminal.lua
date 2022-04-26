@@ -46,6 +46,18 @@ function new (direction)
             self.setBackgroundColor(currentColor)
             self.setCursorPos(currentX, currentY)
         end,
+
+        printList = function (table)
+            for i, v in pairs(table) do
+                self.writeNewLine(v)
+            end
+        end,
+
+        writeNewLine = function (text)
+            local x, y = self.getCursorPos();
+            self.write(text)
+            self.setCursorPos(x, y + 1)
+        end,
     }
 
     --- Make it possible to access public/private api from self
