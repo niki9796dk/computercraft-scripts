@@ -4,10 +4,10 @@
 --- DateTime: 26-04-2022 22:34
 ---
 
+EnhancedMonitor = {}
+
 function EnhancedMonitor:new ()
-    o = {
-        monitor = nil
-    }
+    o = {}
     setmetatable(o, self)
     self.__index = self
     return o
