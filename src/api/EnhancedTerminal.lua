@@ -24,9 +24,9 @@ function new (direction)
             self.setCursorPos(1,1)
         end,
 
-        printProgressBar = function (width, progress)
+        printProgressBar = function (width, progress, x, y)
             self.printBar(width, colors.lightGray, 1, 1)
-            self.printBar(math.floor(progress * width), colors.red, 1, 1)
+            self.printBar(math.floor(progress * width), colors.red, x, y)
         end,
 
         printBar = function (width, color, x, y)
