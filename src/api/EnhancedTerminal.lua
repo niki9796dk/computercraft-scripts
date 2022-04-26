@@ -26,7 +26,7 @@ function new (direction)
 
         printProgressBar = function (width, progress)
             self.printBar(width, colors.lightGray, 1, 1)
-            self.printBar(math.floor((progress / 100) * width), colors.red, 1, 1)
+            self.printBar(math.floor(progress * width), colors.red, 1, 1)
         end,
 
         printBar = function (width, color, x, y)
