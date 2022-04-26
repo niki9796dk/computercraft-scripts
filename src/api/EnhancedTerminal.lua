@@ -6,6 +6,7 @@
 
 function new (direction)
     local self = {
+        --- @type term
         terminal = peripheral.wrap(direction),
     }
 
@@ -18,7 +19,23 @@ function new (direction)
         clear = function ()
             self.terminal.clear()
             self.terminal.setCursorPos(1,1)
-        end
+        end,
+
+        printProgressBar = function (width, progress)
+            self.terminal.setCursorPos(1, 1)
+            self.terminal.setBackgroundColor(colors.black);
+
+            for i = 1, width do
+                self.terminal.write(" ")
+            end
+
+            self.terminal.setBackgroundColor(colors.red);
+            local printWidth = math.floor((progress / 100) * width)
+
+            for i = 1, printWidth do
+                self.terminal.write(" ")
+            end
+        end,
     }
 
     --- Pass any unknown function calls to the underlying terminal
