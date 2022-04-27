@@ -57,7 +57,7 @@ function ApplicationLoop.interval(time, func)
 end
 
 function ApplicationLoop.refreshTimer(listener)
-    ApplicationLoop.timeout(listener.time, listener.func)
+    ApplicationLoop.interval(listener.time, listener.func)
 end
 
 function ApplicationLoop.terminate()
