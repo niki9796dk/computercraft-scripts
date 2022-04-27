@@ -13,7 +13,7 @@ end
 
 function printScreen()
     monitor.clear()
-    monitor.printList(items, {"name", "count", "stock"}, true)
+    monitor.printList(items, {"name", "count", "stock", "status"}, true)
 end
 
 -- get items in chest
@@ -35,18 +35,22 @@ while true do
         end
 
         value.stock = count
-        items[key] = value
 
         if (count < value.count) then
             -- if not crafting, craft
             isCrafting = me.isItemCrafting({ name = value.name })
+            value.status = 'CRAFTING'
 
             if (isCrafting == false) then
                 local toCraft = value.count - count
                 print("Crafting " .. toCraft .. " " .. value.name)
                 me.craftItem({ name = value.name, count = toCraft })
             end
+        else
+            value.status = 'OK'
         end
+
+        items[key] = value
     end
 
     -- sleep for 1 second
