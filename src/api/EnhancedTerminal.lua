@@ -47,12 +47,10 @@ function new (direction)
             self.setCursorPos(currentX, currentY)
         end,
 
-        printList = function (table, trimNamespaces)
+        printList = function (table, headers, trimNamespaces)
             trimNamespaces = trimNamespaces or false
-            local currentX, _ = self.getCursorPos()
             table = self.prepareTable(table, trimNamespaces)
             local columnWidths = self.getColumnWidths(table)
-            local notFirst = false
 
             local totalLineWidth = -1
 
@@ -60,29 +58,45 @@ function new (direction)
                 totalLineWidth = totalLineWidth + width + 3
             end
 
+            self.printTableRow(headers, {}, columnWidths, totalLineWidth)
+
             for _, row in pairs(table) do
-                self.writeLn("|" .. string.rep("-", totalLineWidth) .. "|")
-                notFirst = false
-
-                for key, value in pairs(row) do
-                    if notFirst then
-                        self.write(" | ")
-                    else
-                        self.write("| ")
-                        notFirst = true
-                    end
-
-                    local leftAlign = type(value) ~= "number"
-
-                    self.write(string.format("%" .. (leftAlign and "-" or "") .. columnWidths[key] .. "s", value))
-                end
-
-                self.write(" |")
-                local _, currentY = self.getCursorPos()
-                self.setCursorPos(currentX, currentY + 1)
+                self.printTableRow(headers, row, columnWidths, totalLineWidth)
             end
 
+            self.printTableRowSeparator(totalLineWidth)
+        end,
+
+        printTableRowSeparator = function (totalLineWidth)
             self.writeLn("|" .. string.rep("-", totalLineWidth) .. "|")
+        end,
+
+        printTableRow = function (headers, tableRow, columnWidths, totalLineWidth)
+            local currentX, _ = self.getCursorPos()
+            local notFirst = false
+
+            self.printTableRowSeparator(totalLineWidth)
+
+            for _, key in pairs(headers) do
+                value = tableRow[key] or key
+
+                if notFirst then
+                    self.write(" | ")
+                else
+                    self.write("| ")
+                    notFirst = true
+                end
+
+                local leftAlign = type(value) ~= "number"
+
+                self.write(string.format("%" .. (leftAlign and "-" or "") .. columnWidths[key] .. "s", value))
+            end
+
+            self.write(" |")
+
+            -- Jump to next line
+            local _, currentY = self.getCursorPos()
+            self.setCursorPos(currentX, currentY + 1)
         end,
 
         prepareTable = function (table, trimNamespaces)
@@ -170,9 +184,10 @@ function new (direction)
                 for key, value in pairs(row) do
                     local width = widths[key] or 0
                     local strLen = string.len(value)
+                    local headerLen = string.len(key)
 
-                    if strLen > width then
-                        widths[key] = strLen
+                    if (strLen > width) or (headerLen > width) then
+                        widths[key] = (strLen > headerLen) and strLen or headerLen
                     end
                 end
             end
@@ -182,6 +197,9 @@ function new (direction)
 
         writeLn = function (text)
             local currentX, currentY = self.getCursorPos()
+            if termMock.x == nil then
+                assert(false, "wtf")
+            end
             self.write(text)
             self.setCursorPos(currentX, currentY + 1)
         end,
