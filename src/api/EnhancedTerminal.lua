@@ -57,8 +57,9 @@ function new (direction)
 
                 for key, value in pairs(row) do
                     if notFirst then
-                        self.write(" ")
+                        self.write(" | ")
                     else
+                        self.write("| ")
                         notFirst = true
                     end
 
