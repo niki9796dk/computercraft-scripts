@@ -50,9 +50,18 @@ function new (direction)
         printList = function (table)
             local currentX, currentY = self.getCursorPos()
             local columnWidths = self.getColumnWidths(table)
+            local notFirst = false
 
             for _, row in pairs(table) do
+                notFirst = false
+
                 for key, value in pairs(row) do
+                    if notFirst then
+                        self.write(" ")
+                    else
+                        notFirst = true
+                    end
+
                     self.write("%-" .. columnWidths[key] .. "s", value)
                 end
 
