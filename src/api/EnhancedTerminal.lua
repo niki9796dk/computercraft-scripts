@@ -52,14 +52,14 @@ function new (direction)
             local columnWidths = self.getColumnWidths(table)
             local notFirst = false
 
-            local totalLineWidth = 0
+            local totalLineWidth = -1
 
             for _, width in pairs(columnWidths) do
                 totalLineWidth = totalLineWidth + width + 3
             end
 
             for _, row in pairs(table) do
-                self.writeLn("|" .. string.rep("-", totalLineWidth - 2) .. "|")
+                self.writeLn("|" .. string.rep("-", totalLineWidth) .. "|")
                 notFirst = false
 
                 for key, value in pairs(row) do
@@ -78,7 +78,7 @@ function new (direction)
                 self.setCursorPos(currentX, currentY + 1)
             end
 
-            self.writeLn("|" .. string.rep("-", totalLineWidth - 2) .. "|")
+            self.writeLn("|" .. string.rep("-", totalLineWidth) .. "|")
         end,
 
         getColumnWidths = function (table)
