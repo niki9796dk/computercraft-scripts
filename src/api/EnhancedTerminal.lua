@@ -92,18 +92,16 @@ function new (direction)
                 local resultRow = {}
 
                 for rowKey, value in pairs(row) do
+                    -- Only prepare string value
                     if type(value) ~= "string" then
                         resultRow[rowKey] = value
+                    else
+                        if trimNamespaces then
+                            value = self.stripNamespace(value)
+                        end
 
-                        goto continue
+                        resultRow[rowKey] = self.snakeCaseToHumanCase(value)
                     end
-
-                    if trimNamespaces then
-                        value = self.stripNamespace(value)
-                    end
-
-                    resultRow[rowKey] = self.snakeCaseToHumanCase(value)
-                    ::continue::
                 end
 
                 resultTable[tableKey] = resultRow
