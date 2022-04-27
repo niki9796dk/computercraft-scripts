@@ -62,7 +62,7 @@ function new (direction)
                         notFirst = true
                     end
 
-                    self.write("%-" .. columnWidths[key] .. "s", value)
+                    self.write(string.format("%-" .. columnWidths[key] .. "s", value))
                 end
 
                 self.setCursorPos(currentX, currentY + 1)
