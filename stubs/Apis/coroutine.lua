@@ -1,9 +1,9 @@
 coroutine = {}
 
-function coroutine.create(f) end
-function coroutine.resume(coro, ...) end
+function coroutine.create(func) end
+function coroutine.resume(coroutine, ...) end
 function coroutine.running() end
-function coroutine.status(coro) end
-function coroutine.wrap(f) end
+function coroutine.status(coroutine) end
+function coroutine.wrap(func) end
 function coroutine.yield(...) end
 
