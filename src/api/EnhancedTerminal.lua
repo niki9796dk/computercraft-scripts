@@ -47,10 +47,11 @@ function new (direction)
             self.setCursorPos(currentX, currentY)
         end,
 
-        printList = function (table, headers, trimNamespaces)
+        printList = function (list, headers, trimNamespaces)
             trimNamespaces = trimNamespaces or false
-            table = self.prepareTable(table, trimNamespaces)
-            local columnWidths = self.getColumnWidths(table)
+            table.insert(headers, 1, "#")
+            list = self.prepareTable(list, trimNamespaces)
+            local columnWidths = self.getColumnWidths(list)
 
             local totalLineWidth = -1
 
@@ -60,7 +61,7 @@ function new (direction)
 
             self.printTableRow(headers, headers, columnWidths, totalLineWidth)
 
-            for _, row in pairs(table) do
+            for _, row in pairs(list) do
                 self.printTableRow(headers, row, columnWidths, totalLineWidth)
             end
 
@@ -104,6 +105,8 @@ function new (direction)
 
             for tableKey, row in pairs(table) do
                 local resultRow = {}
+
+                row["#"] = tableKey;
 
                 for rowKey, value in pairs(row) do
                     -- Only prepare string value
