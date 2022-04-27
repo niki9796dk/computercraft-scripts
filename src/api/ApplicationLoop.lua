@@ -1,5 +1,5 @@
 ApplicationLoop = {
-    terminate = false,
+    terminated = false,
     listeners = {
         timers = {}
     },
@@ -9,7 +9,7 @@ function ApplicationLoop.run(main)
     main()
 
     -- Application loop
-    while not terminate do
+    while not ApplicationLoop.terminated do
         -- Keep pulling events
         local event = {os.pullEvent()}
 
@@ -58,4 +58,8 @@ end
 
 function ApplicationLoop.refreshTimer(listener)
     ApplicationLoop.timeout(listener.time, listener.func)
+end
+
+function ApplicationLoop.terminate()
+    ApplicationLoop.terminated = true
 end
