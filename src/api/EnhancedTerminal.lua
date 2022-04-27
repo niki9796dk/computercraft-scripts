@@ -197,9 +197,7 @@ function new (direction)
 
         writeLn = function (text)
             local currentX, currentY = self.getCursorPos()
-            if termMock.x == nil then
-                assert(false, "wtf")
-            end
+
             self.write(text)
             self.setCursorPos(currentX, currentY + 1)
         end,
