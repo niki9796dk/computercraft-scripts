@@ -48,11 +48,11 @@ function new (direction)
         end,
 
         printList = function (table)
-            local currentX, currentY = self.getCursorPos()
+            local currentX, _ = self.getCursorPos()
             local columnWidths = self.getColumnWidths(table)
             local notFirst = false
 
-            local totalLineWidth = -1
+            local totalLineWidth = 0
 
             for _, width in pairs(columnWidths) do
                 totalLineWidth = totalLineWidth + width + 3
@@ -73,6 +73,8 @@ function new (direction)
                     self.write(string.format("%-" .. columnWidths[key] .. "s", value))
                 end
 
+                self.write(" |")
+                local _, currentY = self.getCursorPos()
                 self.setCursorPos(currentX, currentY + 1)
             end
 
