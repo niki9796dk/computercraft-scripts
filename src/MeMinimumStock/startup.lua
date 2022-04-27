@@ -1,4 +1,4 @@
-EnhancedTerminal = require("api/EnhancedTerminal")
+EnhancedTerminal = require("api/EnhanceedTerminal")
 
 me = peripheral.wrap("left")
 monitor = EnhancedTerminal.new("top")
@@ -11,16 +11,20 @@ function load(name)
     return textutils.unserialize(data)
 end
 
--- get items in chest
-local items = load("stock")
+function printScreen()
+    monitor.clear()
+    monitor.printList(items, true)
+end
 
-monitor.clear()
-monitor.printList(items, true)
+-- get items in chest
+items = load("stock")
 
 -- while true
 while true do
+    printScreen()
+
     -- go through each item check if stock is met or is crafting, otherwise craft
-    for _, value in pairs(items) do
+    for key, value in pairs(items) do
         local item = me.getItem({ name = value.name })
 
         -- if nil then count is 0
@@ -29,6 +33,9 @@ while true do
         if (item ~= nil) then
             count = item.amount
         end
+
+        value.stock = count
+        items[key] = value
 
         if (count < value.count) then
             -- if not crafting, craft
