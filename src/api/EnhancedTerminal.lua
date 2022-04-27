@@ -51,7 +51,7 @@ function new (direction)
             trimNamespaces = trimNamespaces or false
             table.insert(headers, 1, "#")
             list = self.prepareTable(list, trimNamespaces)
-            local columnWidths = self.getColumnWidths(list)
+            local columnWidths = self.getColumnWidths(list, headers)
 
             local totalLineWidth = -1
 
@@ -180,17 +180,20 @@ function new (direction)
             return string.sub(result, string.len(glue) + 1)
         end,
 
-        getColumnWidths = function (table)
+        getColumnWidths = function (table, headers)
             local widths = {}
+
+            for _, header in pairs(headers) do
+                widths[header] = string.len(header)
+            end
 
             for _, row in pairs(table) do
                 for key, value in pairs(row) do
                     local width = widths[key] or 0
                     local strLen = string.len(value)
-                    local headerLen = string.len(key)
 
-                    if (strLen > width) or (headerLen > width) then
-                        widths[key] = (strLen > headerLen) and strLen or headerLen
+                    if (strLen > width) then
+                        widths[key] = strLen
                     end
                 end
             end
