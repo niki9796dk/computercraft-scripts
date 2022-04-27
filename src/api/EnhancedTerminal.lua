@@ -49,14 +49,32 @@ function new (direction)
 
         printList = function (table)
             local currentX, currentY = self.getCursorPos()
+            local columnWidths = self.getColumnWidths(table)
 
             for _, row in pairs(table) do
                 for key, value in pairs(row) do
-                    self.write(value .. " ")
+                    self.write("%-" .. columnWidths[key] .. "s", value)
                 end
 
                 self.setCursorPos(currentX, currentY + 1)
             end
+        end,
+
+        getColumnWidths = function (table)
+            local widths = {}
+
+            for _, row in pairs(table) do
+                for key, value in pairs(row) do
+                    local width = widths[key] or 0
+                    local strLen = string.len(value)
+
+                    if strLen > width then
+                        widths[key] = strLen
+                    end
+                end
+            end
+
+            return widths
         end,
     }
 
