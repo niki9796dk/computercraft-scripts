@@ -1,4 +1,7 @@
+EnhancedTerminal = require("api/EnhancedTerminal")
+
 me = peripheral.wrap("left")
+monitor = EnhancedTerminal.new("top")
 
 function load(name)
     local file = fs.open(name, "r")
@@ -10,6 +13,8 @@ end
 
 -- get items in chest
 local items = load("stock")
+
+monitor.printList(items, true)
 
 -- while true
 while true do
