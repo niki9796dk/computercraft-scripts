@@ -1,4 +1,4 @@
-EnhancedTerminal = require("api/EnhanceedTerminal")
+EnhancedTerminal = require("api/EnhancedTerminal")
 
 me = peripheral.wrap("left")
 monitor = EnhancedTerminal.new("top")
@@ -13,7 +13,7 @@ end
 
 function printScreen()
     monitor.clear()
-    monitor.printList(items, true)
+    monitor.printList(items, {"name", "count", "stock"}, true)
 end
 
 -- get items in chest
