@@ -1,7 +1,8 @@
 ApplicationLoop = {
     terminated = false,
     listeners = {
-        timers = {}
+        timers = {},
+        events = {},
     },
 }
 
@@ -23,6 +24,12 @@ function ApplicationLoop.run(main)
                 if listener.endless then
                     ApplicationLoop.refreshTimer(listener)
                 end
+            end
+        else
+            local listeners = ApplicationLoop.listeners.events[event[1]] or {}
+
+            for _, listener in pairs(listeners) do
+                listener(event)
             end
         end
     end
@@ -58,6 +65,14 @@ end
 
 function ApplicationLoop.refreshTimer(listener)
     ApplicationLoop.interval(listener.time, listener.func)
+end
+
+function ApplicationLoop.on(name, func)
+    local eventListeners = ApplicationLoop.listeners.events[name] or {}
+
+    table.insert(eventListeners, func)
+
+    ApplicationLoop.listeners.events[name] = eventListeners
 end
 
 function ApplicationLoop.terminate()
