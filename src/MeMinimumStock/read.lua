@@ -1,3 +1,4 @@
+require("api/Serializer")
 me = peripheral.wrap("left")
 chest = peripheral.wrap("right")
 
@@ -38,7 +39,7 @@ function save(table, name)
 end
 
 -- get items in file
-local existing_items = load("stock")
+local existing_items = Serializer.load("stock")
 
 function merge(item, items)
     for key, value in pairs(items) do
@@ -64,4 +65,4 @@ for key, value in pairs(existing_items) do
     end
 end
 
-save(existing_items, "stock")
+Serializer.save(existing_items, "stock")
