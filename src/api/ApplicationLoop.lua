@@ -1,8 +1,15 @@
+require("api/events/init")
+
+
+
 ApplicationLoop = {
     terminated = false,
     listeners = {
         timers = {},
         events = {},
+    },
+    eventMap = {
+        monitor_touch = MonitorTouchEvent.new,
     },
 }
 
@@ -27,6 +34,11 @@ function ApplicationLoop.run(main)
             end
         else
             local listeners = ApplicationLoop.listeners.events[event[1]] or {}
+            local map = ApplicationLoop.eventMap[event[1]]
+
+            if (map ~= nil) then
+                event = map(event)
+            end
 
             for _, listener in pairs(listeners) do
                 listener(event)
