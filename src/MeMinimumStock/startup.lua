@@ -14,6 +14,7 @@ end
 -- get items in chest
 local items = load("stock")
 
+monitor.clear()
 monitor.printList(items, true)
 
 -- while true
