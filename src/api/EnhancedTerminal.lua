@@ -47,8 +47,10 @@ function new (direction)
             self.setCursorPos(currentX, currentY)
         end,
 
-        printList = function (table)
+        printList = function (table, trimNamespaces)
+            trimNamespaces = trimNamespaces or false
             local currentX, _ = self.getCursorPos()
+            table = self.prepareTable(table, trimNamespaces)
             local columnWidths = self.getColumnWidths(table)
             local notFirst = false
 
@@ -70,7 +72,9 @@ function new (direction)
                         notFirst = true
                     end
 
-                    self.write(string.format("%-" .. columnWidths[key] .. "s", value))
+                    local leftAlign = type(value) ~= "number"
+
+                    self.write(string.format("%" .. (leftAlign and "-" or "") .. columnWidths[key] .. "s", value))
                 end
 
                 self.write(" |")
@@ -79,6 +83,79 @@ function new (direction)
             end
 
             self.writeLn("|" .. string.rep("-", totalLineWidth) .. "|")
+        end,
+
+        prepareTable = function (table, trimNamespaces)
+            local resultTable = {}
+
+            for tableKey, row in pairs(table) do
+                local resultRow = {}
+
+                for rowKey, value in pairs(row) do
+                    if trimNamespaces then
+                        value = self.stripNamespace(value)
+                    end
+
+                    resultRow[rowKey] = self.snakeCaseToHumanCase(value)
+                end
+
+                resultTable[tableKey] = resultRow
+            end
+
+            return resultTable
+        end,
+
+        stripNamespace = function (text)
+            local nameSpacePos = string.find(text, ':')
+
+            if (nameSpacePos == nil) then
+                return text
+            end
+
+            return string.sub(text, nameSpacePos + 1)
+        end,
+
+        snakeCaseToHumanCase = function (text)
+            local splits = self.stringExplode(text, '_')
+            local ucfirst = function (value) return string.upper(string.sub(value, 1, 1)) .. string.sub(value, 2) end
+
+            splits = self.stringMap(splits, ucfirst)
+
+            return self.stringImplode(splits, ' ')
+        end,
+
+        stringExplode = function (inputString, separator)
+            if separator == nil then
+                separator = "%s"
+            end
+
+            local t={}
+
+            for str in string.gmatch(inputString, "([^".. separator .."]+)") do
+                table.insert(t, str)
+            end
+
+            return t
+        end,
+
+        stringMap = function (strings, map)
+            local result = {}
+
+            for key, string in pairs(strings) do
+                result[key] = map(string)
+            end
+
+            return result
+        end,
+
+        stringImplode = function (strings, glue)
+            local result = ""
+
+            for _, string in pairs(strings) do
+                result = result .. glue .. string
+            end
+
+            return string.sub(result, string.len(glue) + 1)
         end,
 
         getColumnWidths = function (table)
