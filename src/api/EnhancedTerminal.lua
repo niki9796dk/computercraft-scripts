@@ -52,7 +52,14 @@ function new (direction)
             local columnWidths = self.getColumnWidths(table)
             local notFirst = false
 
+            local totalLineWidth = -1
+
+            for _, width in pairs(columnWidths) do
+                totalLineWidth = totalLineWidth + width + 3
+            end
+
             for _, row in pairs(table) do
+                self.write("|" .. string.rep("-", totalLineWidth - 2) .. "|")
                 notFirst = false
 
                 for key, value in pairs(row) do
