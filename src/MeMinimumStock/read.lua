@@ -24,20 +24,6 @@ for key, value in pairs(items) do
     value.count = ask("Enter amount to keep in stock: ")
 end
 
-function load(name)
-    local file = fs.open(name, "r")
-    local data = file.readAll()
-    file.close()
-
-    return textutils.unserialize(data)
-end
-
-function save(table, name)
-    local file = fs.open(name, "w")
-    file.write(textutils.serialize(table))
-    file.close()
-end
-
 -- get items in file
 local existing_items = Serializer.load("stock")
 
