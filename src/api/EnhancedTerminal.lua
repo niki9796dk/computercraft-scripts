@@ -59,7 +59,7 @@ function new (direction)
             end
 
             for _, row in pairs(table) do
-                self.write("|" .. string.rep("-", totalLineWidth - 2) .. "|")
+                self.writeLn("|" .. string.rep("-", totalLineWidth - 2) .. "|")
                 notFirst = false
 
                 for key, value in pairs(row) do
@@ -75,6 +75,8 @@ function new (direction)
 
                 self.setCursorPos(currentX, currentY + 1)
             end
+
+            self.writeLn("|" .. string.rep("-", totalLineWidth - 2) .. "|")
         end,
 
         getColumnWidths = function (table)
@@ -92,6 +94,12 @@ function new (direction)
             end
 
             return widths
+        end,
+
+        writeLn = function (text)
+            local currentX, currentY = self.getCursorPos()
+            self.write(text)
+            self.setCursorPos(currentX, currentY + 1)
         end,
     }
 
