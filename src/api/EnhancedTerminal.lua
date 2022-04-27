@@ -58,7 +58,7 @@ function new (direction)
                 totalLineWidth = totalLineWidth + width + 3
             end
 
-            self.printTableRow(headers, {}, columnWidths, totalLineWidth)
+            self.printTableRow(headers, headers, columnWidths, totalLineWidth)
 
             for _, row in pairs(table) do
                 self.printTableRow(headers, row, columnWidths, totalLineWidth)
@@ -77,8 +77,8 @@ function new (direction)
 
             self.printTableRowSeparator(totalLineWidth)
 
-            for _, key in pairs(headers) do
-                value = tableRow[key] or key
+            for key, header in pairs(headers) do
+                value = tableRow[header] or tableRow[key] or nil
 
                 if notFirst then
                     self.write(" | ")
@@ -89,7 +89,7 @@ function new (direction)
 
                 local leftAlign = type(value) ~= "number"
 
-                self.write(string.format("%" .. (leftAlign and "-" or "") .. columnWidths[key] .. "s", value))
+                self.write(string.format("%" .. (leftAlign and "-" or "") .. columnWidths[header] .. "s", value))
             end
 
             self.write(" |")
@@ -138,7 +138,7 @@ function new (direction)
             local splits = self.stringExplode(text, '_')
             local ucfirst = function (value) return string.upper(string.sub(value, 1, 1)) .. string.sub(value, 2) end
 
-            splits = self.stringMap(splits, ucfirst)
+            splits = self.tableMap(splits, ucfirst)
 
             return self.stringImplode(splits, ' ')
         end,
@@ -157,11 +157,11 @@ function new (direction)
             return t
         end,
 
-        stringMap = function (strings, map)
+        tableMap = function (values, map)
             local result = {}
 
-            for key, string in pairs(strings) do
-                result[key] = map(string)
+            for key, value in pairs(values) do
+                result[key] = map(value, key)
             end
 
             return result
