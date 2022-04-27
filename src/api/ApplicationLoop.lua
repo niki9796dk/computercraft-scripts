@@ -14,26 +14,48 @@ function ApplicationLoop.run(main)
         local event = {os.pullEvent()}
 
         if event[1] == "timer" then
-            local listener = ApplicationLoop.findTimerListener(event[2])
+            local key, listener = ApplicationLoop.findTimerListener(event)
 
-            listener.func()
+            if (key ~= nil and listener ~= nil) then
+                listener.func()
+                table.remove(ApplicationLoop.listeners.timers, key)
+
+                if listener.endless then
+                    ApplicationLoop.refreshTimer(listener)
+                end
+            end
         end
     end
 end
 
-function ApplicationLoop.findTimerListener(timer)
+function ApplicationLoop.findTimerListener(event)
     for key, listener in pairs(ApplicationLoop.listeners.timers) do
-        if listener.timer == timer then
+        if listener.timer == event[2] then
             return key, listener
         end
     end
 
-    assert(false, "Could not locate timer listener")
+    return nil, nil
 end
 
 function ApplicationLoop.timeout(time, func)
     table.insert(ApplicationLoop.listeners.timers, {
         timer = os.startTimer(time),
+        time = time,
         func = func,
+        endless = false
     })
+end
+
+function ApplicationLoop.interval(time, func)
+    table.insert(ApplicationLoop.listeners.timers, {
+        timer = os.startTimer(time),
+        time = time,
+        func = func,
+        endless = true
+    })
+end
+
+function ApplicationLoop.refreshTimer(listener)
+    ApplicationLoop.timeout(listener.time, listener.func)
 end
