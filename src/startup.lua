@@ -1,14 +1,16 @@
-require("mocks/init");
-
 EnhancedTerminal = require("api/EnhancedTerminal");
+require("api/ApplicationLoop");
 
-et = EnhancedTerminal.new("right");
+ApplicationLoop.run(function ()
+    -- Wrap the application in coroutine
+    local MeMinimumStock = coroutine.wrap(function () require("MeMinimumStock/startup")  end)
+    local terminal = EnhancedTerminal.new("top")
 
-et.printList({
-    {name = "minecraft:dirt", count = 25, stock = 354},
-    {name = "minecraft:glass", count = 100, stock = 100},
-    {name = "'mekanism:oak_planks", count = 1234, stock = 8942},
-    {name = "'mekanism:oak_planks", count = 1234},
-}, {"name", "count", "stock", "abekat"}, true)
+    ApplicationLoop.interval(1, MeMinimumStock)
 
-et.dump()
+    ---@param event MonitorTouchEvent
+    ApplicationLoop.on("touch_event", function (event)
+        terminal.setCursorPos(event.x, event.y)
+        terminal.write("#")
+    end)
+end)
