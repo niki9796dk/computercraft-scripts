@@ -1,15 +1,8 @@
 EnhancedTerminal = require("api/EnhancedTerminal")
+require("api/Serializer")
 
 me = peripheral.wrap("left")
 monitor = EnhancedTerminal.new("top")
-
-function load(name)
-    local file = fs.open(name, "r")
-    local data = file.readAll()
-    file.close()
-
-    return textutils.unserialize(data)
-end
 
 function printScreen()
     monitor.clear()
@@ -17,7 +10,7 @@ function printScreen()
 end
 
 -- get items in chest
-items = load("stock")
+items = Serializer.load("stock")
 
 -- while true
 while true do
@@ -53,6 +46,5 @@ while true do
         items[key] = value
     end
 
-    -- sleep for 1 second
-    os.sleep(1)
+    coroutine.yield()
 end
