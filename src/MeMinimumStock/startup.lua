@@ -46,5 +46,5 @@ while true do
         items[key] = value
     end
 
-    coroutine.yield()
+    sleep(1)
 end
