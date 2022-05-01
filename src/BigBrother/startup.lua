@@ -83,7 +83,7 @@ function isInBox(pos, box)
     boxMaxZ = math.max(box[1].z, box[2].z)
 
     local withinX = boxMinX <= pos.x and pos.x <= boxMaxX
-    local withinZ = boxMinY <= pos.z and pos.z <= boxMaxY
+    local withinZ = boxMinZ <= pos.z and pos.z <= boxMaxZ
 
     return withinX and withinZ
 end
@@ -141,8 +141,8 @@ end
 playerStateManager.updateStateMap()
 playerStateManager.updateStateMap()
 
-playerStateManager.onDistrictEnter(function (playerName, district) cb.sendMessage("§2§l" .. playerName .. "§r has entered §n" .. district.name .. "§r!", 'BigBrother') end)
-playerStateManager.onDistrictLeave(function (playerName, district) cb.sendMessage("§2§l" .. playerName .. "§r has left §n" .. district.name .. "§r!", 'BigBrother') end)
+playerStateManager.onDistrictEnter(function (playerName, district) cb.sendMessageToPlayer("§2§l" .. playerName .. "§r has entered §n" .. district.name .. "§r!", "DK_Headcrab_DK", 'BigBrother') end)
+playerStateManager.onDistrictLeave(function (playerName, district) cb.sendMessageToPlayer("§2§l" .. playerName .. "§r has left §n" .. district.name .. "§r!", "DK_Headcrab_DK", 'BigBrother') end)
 
 while true do
     playerStateManager.updateStateMap()
@@ -151,11 +151,11 @@ while true do
     ---@param previousState PlayerPos
     playerStateManager.forEachPlayer(function (playerName, currentState, previousState)
         if playerStateManager.hasLeft(playerName) then
-            cb.sendMessage("§2§l" .. playerName .. "§r has left the §nOverworld§r!", 'BigBrother')
+            cb.sendMessageToPlayer("§2§l" .. playerName .. "§r has left the §nOverworld§r!", "DK_Headcrab_DK", 'BigBrother')
         end
 
         if playerStateManager.isBack(playerName) then
-            cb.sendMessage(playerName .. " has returned to the §nOverworld§r!", 'BigBrother')
+            cb.sendMessageToPlayer(playerName .. " has returned to the §nOverworld§r!", "DK_Headcrab_DK", 'BigBrother')
         end
     end)
 
