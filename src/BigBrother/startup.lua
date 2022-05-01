@@ -24,8 +24,10 @@ function playerStateManager.updateStateMap()
     for _, playerName in pairs(pd.getOnlinePlayers()) do
         liveState = pd.getPlayerPos(playerName)
 
-        playerStateManager.previousStates[playerName] = playerStateManager.currentStates[playerName] or liveState
-        playerStateManager.currentStates[playerName] = liveState
+        if liveState ~= nil then
+            playerStateManager.previousStates[playerName] = playerStateManager.currentStates[playerName] or liveState
+            playerStateManager.currentStates[playerName] = liveState
+        end
     end
 end
 
