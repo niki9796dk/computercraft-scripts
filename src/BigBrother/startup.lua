@@ -8,16 +8,20 @@ playerStateManager = {
 
 --- @return PlayerPos
 function playerStateManager.getCurrentState(playerName)
-    return playerStateManager.currentStates[playerName] or error("No such player: " .. playerName)
+    return playerStateManager.currentStates[playerName]
 end
 
 --- @return PlayerPos
 function playerStateManager.getPreviousState(playerName)
-    return playerStateManager.previousStates[playerName] or error("No such player: " .. playerName)
+    return playerStateManager.previousStates[playerName]
 end
 
-function playerStateManager.hasChangedDimension(playerName)
-    return playerStateManager.getCurrentState(playerName).dimension ~= playerStateManager.getPreviousState(playerName).dimension
+function playerStateManager.hasLeft(playerName)
+    return playerStateManager.getCurrentState(playerName) == nil and playerStateManager.getPreviousState(playerStateManager) ~= nil
+end
+
+function playerStateManager.isBack(playerName)
+    return playerStateManager.getCurrentState(playerName) ~= nil and playerStateManager.getPreviousState(playerStateManager) == nil
 end
 
 function playerStateManager.updateStateMap()
@@ -33,7 +37,7 @@ end
 
 function playerStateManager.forEachPlayer(func)
     for _, playerName in pairs(pd.getOnlinePlayers()) do
-        func(playerName, playerStateManager.currentStates[playerName], playerStateManager.previousStates[playerName])
+        func(playerName, playerStateManager.getCurrentState(playerName),  playerStateManager.getPreviousState(playerName))
     end
 end
 
@@ -43,8 +47,12 @@ while true do
     ---@param currentState PlayerPos
     ---@param previousState PlayerPos
     playerStateManager.forEachPlayer(function (playerName, currentState, previousState)
-        if playerStateManager.hasChangedDimension(playerName) then
-            print("[BigBrother] " .. playerName .. " welcome to [" .. currentState.dimension .. "]!")
+        if playerStateManager.hasLeft(playerName) then
+            print("[BigBrother] " .. playerName .. " has left the Overworld!")
+        end
+
+        if playerStateManager.isBack(playerName) then
+            print("[BigBrother] " .. playerName .. " has returend to the Overworld!")
         end
     end)
 
