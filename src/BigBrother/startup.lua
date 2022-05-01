@@ -85,11 +85,11 @@ function playerStateManager.updateStateMap()
 
         if previousDistrict == nil and currentDistrict ~= nil then
             for _, func in pairs(playerStateManager.onDistrictEnterFunctions) do
-                func(playerName)
+                func(playerName, currentDistrict)
             end
         elseif previousDistrict ~= nil and currentDistrict == nil then
             for _, func in pairs(playerStateManager.onDistrictLeaveFunctions) do
-                func(playerName)
+                func(playerName, previousDistrict)
             end
         end
     end
@@ -106,8 +106,8 @@ end
 playerStateManager.updateStateMap()
 playerStateManager.updateStateMap()
 
-playerStateManager.onDistrictEnter(function (playerName) cb.sendMessage("§2§l" .. playerName .. "§r has entered §n" .. currentDistrict.name .. "§r!", 'BigBrother') end)
-playerStateManager.onDistrictLeave(function (playerName) cb.sendMessage("§2§l" .. playerName .. "§r has left §n" .. currentDistrict.name .. "§r!", 'BigBrother') end)
+playerStateManager.onDistrictEnter(function (playerName, district) cb.sendMessage("§2§l" .. playerName .. "§r has entered §n" .. district.name .. "§r!", 'BigBrother') end)
+playerStateManager.onDistrictLeave(function (playerName, district) cb.sendMessage("§2§l" .. playerName .. "§r has left §n" .. district.name .. "§r!", 'BigBrother') end)
 
 while true do
     playerStateManager.updateStateMap()
