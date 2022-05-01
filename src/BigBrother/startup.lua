@@ -50,11 +50,11 @@ while true do
     ---@param previousState PlayerPos
     playerStateManager.forEachPlayer(function (playerName, currentState, previousState)
         if playerStateManager.hasLeft(playerName) then
-            cb.sendMessage(playerName .. " has left the Overworld!", 'BigBrother')
+            cb.sendMessage("§2§l" .. playerName .. "§r has left the §nOverworld§r!", 'BigBrother')
         end
 
         if playerStateManager.isBack(playerName) then
-            cb.sendMessage(playerName .. " has returned to the Overworld!", 'BigBrother')
+            cb.sendMessage(playerName .. " has returned to the §nOverworld§r!", 'BigBrother')
         end
     end)
 
