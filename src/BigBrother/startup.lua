@@ -1,5 +1,7 @@
 --- @type PlayerDetector
 pd = peripheral.find("playerDetector")
+--- @type ChatBox
+cb = peripheral.find("chatBox")
 
 playerStateManager = {
     previousStates = {},
@@ -17,11 +19,11 @@ function playerStateManager.getPreviousState(playerName)
 end
 
 function playerStateManager.hasLeft(playerName)
-    return playerStateManager.getCurrentState(playerName) == nil and playerStateManager.getPreviousState(playerStateManager) ~= nil
+    return playerStateManager.getCurrentState(playerName) == nil and playerStateManager.getPreviousState(playerName) ~= nil
 end
 
 function playerStateManager.isBack(playerName)
-    return playerStateManager.getCurrentState(playerName) ~= nil and playerStateManager.getPreviousState(playerStateManager) == nil
+    return playerStateManager.getCurrentState(playerName) ~= nil and playerStateManager.getPreviousState(playerName) == nil
 end
 
 function playerStateManager.updateStateMap()
@@ -48,11 +50,11 @@ while true do
     ---@param previousState PlayerPos
     playerStateManager.forEachPlayer(function (playerName, currentState, previousState)
         if playerStateManager.hasLeft(playerName) then
-            print("[BigBrother] " .. playerName .. " has left the Overworld!")
+            cb.sendMessage(playerName .. " has left the Overworld!", 'BigBrother')
         end
 
         if playerStateManager.isBack(playerName) then
-            print("[BigBrother] " .. playerName .. " has returned to the Overworld!")
+            cb.sendMessage(playerName .. " has returned to the Overworld!", 'BigBrother')
         end
     end)
 
