@@ -37,6 +37,10 @@ function playerStateManager.forEachPlayer(func)
     end
 end
 
+-- Initialize player state maps both current and previous states
+playerStateManager.updateStateMap()
+playerStateManager.updateStateMap()
+
 while true do
     playerStateManager.updateStateMap()
 
