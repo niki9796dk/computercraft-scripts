@@ -48,9 +48,9 @@ end
 
 function isInBox(pos, box)
     local withinX = box[1].x <= pos.x and pos.x <= box[2].x
-    local withinY = box[1].y <= pos.y and pos.y <= box[2].y
+    local withinZ = box[1].z <= pos.z and pos.z <= box[2].z
 
-    return withinX and withinY
+    return withinX and withinZ
 end
 
 function playerStateManager.getDistrict(state)
