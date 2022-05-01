@@ -54,6 +54,10 @@ function isInBox(pos, box)
 end
 
 function playerStateManager.getDistrict(state)
+    if state == nil then
+        return nil
+    end
+
     for _, district in pairs(districts) do
         if isInBox(state, district.area) then
             return district
@@ -68,7 +72,7 @@ function playerStateManager.onDistrictEnter(func)
 end
 
 function playerStateManager.onDistrictLeave(func)
-    table.insert(playerStateManager.onDistrictEnterFunctions, func)
+    table.insert(playerStateManager.onDistrictLeaveFunctions, func)
 end
 
 function playerStateManager.updateStateMap()
