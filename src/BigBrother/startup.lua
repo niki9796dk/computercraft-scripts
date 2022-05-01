@@ -25,7 +25,7 @@ function playerStateManager.updateStateMap()
         liveState = pd.getPlayerPos(playerName)
 
         playerStateManager.previousStates[playerName] = playerStateManager.currentStates[playerName] or liveState
-        playerStateManager.currentStates = liveState
+        playerStateManager.currentStates[playerName] = liveState
     end
 end
 
@@ -36,7 +36,7 @@ function playerStateManager.forEachPlayer(func)
 end
 
 while true do
-    playerStateManager.updateStateMaps()
+    playerStateManager.updateStateMap()
 
     ---@param currentState PlayerPos
     ---@param previousState PlayerPos
