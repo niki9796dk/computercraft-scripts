@@ -12,6 +12,7 @@ playerStateManager = {
 
 districts = {
     {
+        --- The bois
         name = "District 1",
         area = {
             {x = -752, z = 591},
@@ -20,12 +21,40 @@ districts = {
     },
 
     {
+        --- I am the bait
         name = "District 2",
         area = {
             {x = -322, z = 718},
             {x = -250, z = 842}
         }
-    }
+    },
+
+    {
+        --- Malthe
+        name = "District 3",
+        area = {
+            {x = -174, z = 693},
+            {x = -36, z = 536}
+        }
+    },
+
+    {
+        --- Mikkel Borg
+        name = "District 4",
+        area = {
+            {x = 853, z = 0},
+            {x = 1077, z = 297}
+        }
+    },
+
+    {
+        --- Molitany
+        name = "District 5",
+        area = {
+            {x = 1120, z = -514},
+            {x = 893, z = -712}
+        }
+    },
 }
 
 --- @return PlayerPos
@@ -47,8 +76,14 @@ function playerStateManager.isBack(playerName)
 end
 
 function isInBox(pos, box)
-    local withinX = box[1].x <= pos.x and pos.x <= box[2].x
-    local withinZ = box[1].z <= pos.z and pos.z <= box[2].z
+    boxMinX = math.min(box[1].x, box[2].x)
+    boxMaxX = math.max(box[1].x, box[2].x)
+
+    boxMinZ = math.min(box[1].z, box[2].z)
+    boxMaxZ = math.max(box[1].z, box[2].z)
+
+    local withinX = boxMinX <= pos.x and pos.x <= boxMaxX
+    local withinZ = boxMinY <= pos.z and pos.z <= boxMaxY
 
     return withinX and withinZ
 end
