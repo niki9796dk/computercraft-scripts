@@ -26,12 +26,8 @@ end
 
 function playerStateManager.updateStateMap()
     for _, playerName in pairs(pd.getOnlinePlayers()) do
-        liveState = pd.getPlayerPos(playerName)
-
-        if liveState ~= nil then
-            playerStateManager.previousStates[playerName] = playerStateManager.currentStates[playerName] or liveState
-            playerStateManager.currentStates[playerName] = liveState
-        end
+        playerStateManager.previousStates[playerName] = playerStateManager.currentStates[playerName]
+        playerStateManager.currentStates[playerName] = pd.getPlayerPos(playerName)
     end
 end
 
@@ -52,7 +48,7 @@ while true do
         end
 
         if playerStateManager.isBack(playerName) then
-            print("[BigBrother] " .. playerName .. " has returend to the Overworld!")
+            print("[BigBrother] " .. playerName .. " has returned to the Overworld!")
         end
     end)
 
